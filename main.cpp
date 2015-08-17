@@ -47,6 +47,7 @@ int main(int argc, char** argv) {
                  }
                  }
             img.at<uchar>(img.rows-y,img.cols-x)=px;
+            //hollasasa
         }
     }
     imshow("imagenes",img);
