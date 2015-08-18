@@ -43,7 +43,7 @@ int main() {
    // cout<<vect[0].pop_back();
     cout<<"----fin------";
     */
-    Mat img=imread("/home/system/imagenes/img/binary.jpg",0);
+    Mat img=imread("/home/fredy/imagenes/img/binary.jpg",0);
     Mat res=Mat::zeros(img.rows,img.cols, CV_8UC1);
     for(int i=0;i<img.rows;i++){
         for(int j=0;j<img.cols;j++){
