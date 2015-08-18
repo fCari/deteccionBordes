@@ -18,15 +18,11 @@ int WHITE=255;
 bool buscarPts(Point v, Point tmp){
     for(int y=-1;y<=1;y++){
         for(int x=-1;x<=1;x++){
-            cout<<"1 ---------"<<v<<" , "<<Point(tmp.x+x,tmp.y+y)<<endl;
-            if((v==Point(tmp.x+x,tmp.y+y))){
-                 cout<<"2 ---------"<<v<<" , "<<Point(tmp.x+x,tmp.y+y)<<endl;
-                if(x==y&&x==0){
-                    cout<<" ---------"<<endl;
-                    getchar();
-                    return true;
-                    
-                }
+            //int val=v-Point(tmp.x+x,tmp.y+y;
+            cout<<" /////>>>>"<<v-Point(tmp.x+x,tmp.y+y)<<endl;
+            getchar();
+           if(v-Point(tmp.x+x,tmp.y+y)==Point(0,0)){
+                    return true;    
             }
         }
     }    
@@ -47,7 +43,7 @@ int main() {
    // cout<<vect[0].pop_back();
     cout<<"----fin------";
     */
-    Mat img=imread("/home/fredy/imagenes/img/binary.jpg",0);
+    Mat img=imread("/home/system/imagenes/img/binary.jpg",0);
     Mat res=Mat::zeros(img.rows,img.cols, CV_8UC1);
     for(int i=0;i<img.rows;i++){
         for(int j=0;j<img.cols;j++){
@@ -77,64 +73,65 @@ int main() {
                        px2=umbral;
                 }                
             }            
-            if((px1==0&&px2!=0)||(px1!=0&&px2==0))
+            if((px1==0&&px2==510)||(px1==510&&px2==0))
                 res.at<uchar>(y,x)=umbral;
-            //else if((px1==0&&px2==255)||(px1==255&&px2==0))
-            //    res.at<uchar>(y,x)=255;
+            else if((px1==0&&px2==255)||(px1==255&&px2==0))
+                res.at<uchar>(y,x)=umbral;
             else
-                res.at<uchar>(y,x)=0;//mejor con px1 en vez de 0
+                res.at<uchar>(y,x)=px1;//mejor con px1 en vez de 0
             //----------------------GUARDAR EN VECTOR-----------------------------------
-            int cont=0;
-            cout<<"tamño de los puntoss:"<<pts.size()<<endl;
-            if(pts.size()!=0){
-                cout<<" ::: "<<v<<endl;
-                for(int h=0;h<=v;h++){
-                   // cout<<"  ::::::::::::: "<<pts[v].front()<<",.-"<<buscarPts(pts[v].front(),Point(4,5))<<endl;
-                    //getchar();
-                    cout<<" ::: "<<pts[v].back()<<" , "<<Point2d(x,y)<<" , "<<buscarPts(pts[v].back(),Point2d(x,y));
-                    getchar();
-                        if(buscarPts(pts[v].back(),Point2d(x,y))){
-                           pts[v].push_back(Point2d(x,y));
-                           cout<<" 1 ";
-                        }else if(buscarPts(pts[v].front(),Point2d(x,y))){
-                           pts[v].push_front(Point2d(x,y));
-                           cout<<" 2 ";
-                        }else{
-                           cont++;  
-                           cout<<" 3 ";
-                        }
-                        
-                }
-                if(cont==v+1){
-                    cout<<" 4 ";
-                    v++;
-                    pts[v].push_back(Point(x,y));
-                } 
-            }else{
-               pts.resize(100);
-                pts[v].push_back(Point(x,y));
-                cout<<" coorde:::"<<x<<" , "<<y<<endl;
-                //pts[v].push_back(Point(x,y+1));
-                //pts[v].push_back(Point(x,y+2));
-                //list<Point>::iterator it;
-                /*for (it = pts[0].begin(); it != pts[0].end(); it++)
-                     cout << (*it)<< " , "<<endl;*/
-                
-            }       
+           
         }
     }
-    /*cout<<v<<endl;
-    getchar();
-    for(int h=0;h<=v;h++){
-             list<Point>::iterator it;
-                for (it = pts[h].begin(); it != pts[h].end(); it++)
-                     cout << (*it)<< " , ";
-             cout<<endl;
-    }*/
-    //namedWindow( "imagenes",CV_WINDOW_KEEPRATIO);
-   // imshow("imagenes",res);
+       namedWindow( "imagenes",CV_WINDOW_KEEPRATIO);
+    imshow("imagenes",res);
     waitKey(0);
+        for(int y=2;y<img.rows-2;y++){
+          for(int x=2;x<img.cols-2;x++){
+              if(res.at<uchar>(y,x)==255){
+              int cont=0;
+                 if(pts.size()!=0){
+                     for(int h=0;h<=v;h++){
+                         //cout<<buscarPts(pts[v].back(),Point2d(x,y))<<": "<<pts[v].back()<<Point2d(x,y);
+                             if(buscarPts(pts[v].back(),Point(x,y))){
+                                pts[v].push_back(Point(x,y));
+                             }else if(buscarPts(pts[v].front(),Point(x,y))){
+                                pts[v].push_front(Point(x,y));
+                             }else{
+                                cont++;  
+                             }                        
+                     }
+                     if(cont==v+1){
+                         v++;
+                         pts[v].push_back(Point(x,y));
+                     } 
+                 }else{
+                     pts.resize(400);
+                     pts[v].push_back(Point(x,y));
+                    // cout<<" coorde:::"<<x<<" , "<<y<<endl;
+                     //pts[v].push_back(Point(x,y+1));
+                     //pts[v].push_back(Point(x,y+2));
+                     /*list<Point>::iterator it;
+                     for (it = pts[0].begin(); it != pts[0].end(); it++)
+                          cout << (*it)<< " , "<<endl;*/
+
+                 }
+              }
+          }
+        }
+    cout<<" hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh: "<<pts[0].size();
+    //getchar();
+             list<Point>::iterator it;
+                for (it = pts[0].begin(); it != pts[0].end(); it++){
+                     cout << (*it)<< " , holas "<<endl;
+                     res.at<uchar>((*it).y,(*it).x)=100;
+                }
+             //cout<<endl;
     
+    namedWindow("imagenes2",CV_WINDOW_NORMAL);
+    imshow("imagenes2",res);
+    waitKey(0);
+    getchar();
     return 0;
 }
 
